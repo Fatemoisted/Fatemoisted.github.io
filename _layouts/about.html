@@ -1,0 +1,543 @@
+---
+layout: default
+---
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script type="text/javascript" src="https://stamen-maps.a.ssl.fastly.net/js/tile.stamen.js?v1.3.0"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css" /> -->
+
+
+
+
+<!-- Panelbear Analytics - We respect your privacy -->
+<script async src="https://cdn.panelbear.com/analytics.js?site=93OoYW0z85N"></script>
+<script>
+    window.panelbear = window.panelbear || function() { (window.panelbear.q = window.panelbear.q || []).push(arguments); };
+    panelbear('config', { site: '93OoYW0z85N' });
+</script>
+
+
+
+<div class="post">
+
+  <header class="post-header">
+    <h3 class="post-title">
+     {% if site.title != "blank" %}<span class="font-weight-thin">{{ site.first_name }}</span> {{ site.middle_name }} {{ site.last_name }} &nbsp; <span style="font-family: 'PingFang SC', serif; color: #504c4c;">丁宁</span> {% else %}{{ site.title }}
+     {% endif %}
+    </h3>
+    <!-- <div class="job-info" style="margin-top: 10px; text-align: left;>
+      <p style="color: #402F7C; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px;">
+        Assistant Professor @ Tsinghua University<br>
+      </p>
+    </div> -->
+    <div>
+      <span id="date" style="color: rgb(53, 52, 52); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif"></span>.
+    </div>
+
+
+
+    <script>
+      const dateElement = document.getElementById('date');
+      const today = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      dateElement.textContent = today.toLocaleDateString('en-US', options);
+    </script>
+    
+    <div>
+      <span style="color: rgb(57, 56, 56); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">  </span>
+      <span id="weather-text" style="color: rgb(65, 64, 64); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif"></span>
+      <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beijing Weather Icon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+  <style>
+    #weather-icon i {
+      color: grey;
+    }
+  </style>
+</head>
+<body>
+  <div id="weather-icon"></div>
+    
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        const apiKey = '916a98b48a576641bb870cfd458d045f';
+        const city = 'Beijing';
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            const weatherCode = data.weather[0].id;
+            const iconClass = `wi wi-owm-${weatherCode}`;
+            $('#weather-icon').addClass(iconClass);
+          })
+          .catch((error) => console.error('Error fetching weather data:', error));
+      });
+    </script>
+
+    
+    <script>
+      const textElement = document.getElementById('weather-text');
+      const apiKey = '916a98b48a576641bb870cfd458d045f';
+      const city = 'Beijing';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const temperature = (data.main.temp).toFixed(1);
+          const fahrenheit = ((temperature * 9/5) + 32).toFixed(1);
+          const description = data.weather[0].description;
+          textElement.textContent = `@${city} ${temperature}°C / ${fahrenheit}°F, ${description}.`;
+        })
+        .catch(error => {
+          console.error('Error fetching weather data:', error);
+          textElement.textContent = 'Unable to fetch weather data.';
+        });
+    </script>
+    
+   </small>
+
+  </header>
+  <br>
+  <article style="max-width: 780px">
+    {% if page.profile %}
+    <div class="profile float-right" >
+      {% if page.profile.image %}
+        <img class="img-fluid rounded profile-image" src="{{ page.profile.image | prepend: '/assets/img/' | relative_url }}" style="width:100%; max-width: 375px; margin-top: 30px; border: none; margin-left: -47px;">
+      {% endif %}
+      <div class="profile-name" style="margin-top: 10px; text-align: left; margin-left: -40px;">
+        <p style="color: #402F7C; font-size: 15px;">Assistant Professor @ Tsinghua </p>
+      <!-- <div class="email-container" style="margin-top: 10px; text-align: left; margin-left: -47px;">
+        <a href="mailto:ningding.cs@gmail.com" style="text-decoration: none; color: #402F7C; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; transition: color 0.3s ease;">
+          <i class="fas fa-envelope" style="margin-right: 5px;"></i>
+          ningding.cs AT gmail DOT com
+        </a>
+      </div> -->
+    </div>
+      
+
+
+    </div>
+    <div class="profile-text">
+      <div class="clearfix" style="width: 100%; max-width: 800px; padding-left: 52px;">
+        {{ content }}
+      </div>
+    </div>
+
+    {% endif %}
+
+  </article>
+
+
+<!-- Elegant Unified Infobox v3 START -->
+
+<style>
+  /* 基础容器 */
+  .unified-infobox {
+    width: 88%;
+    margin: 20px 0 40px 0; /* 上间距20px，右0，下40px，左0 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #333;
+    border-top: 1px solid #eaeaea; /* 顶部起始线 */
+    border-bottom: 1px solid #eaeaea; /* 底部结束线 */
+  }
+
+  /* --- 通用头部样式 (Header) --- */
+  .info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    user-select: none;
+  }
+  .info-header:hover .header-title {
+    color: #000; /* Hover时标题变纯黑 */
+  }
+  .info-header:hover .toggle-icon {
+    color: #000;
+  }
+
+  /* 标题区域 */
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .toggle-icon {
+    font-size: 10px;
+    color: #aaa;
+    transition: transform 0.3s ease, color 0.2s;
+    width: 12px;
+    text-align: center;
+  }
+  .toggle-icon.open {
+    transform: rotate(90deg);
+    color: #444;
+  }
+
+  .header-title {
+    font-size: 14px;
+    font-weight: 400; /* 中等字重，不粗重 */
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* 增加字间距，显得高级 */
+    color: #555;
+    transition: color 0.2s;
+  }
+
+  /* 头部右侧链接区域 */
+  .header-right-links {
+    display: flex;
+    gap: 18px;
+    font-size: 14px;
+  }
+  .header-right-links a {
+    color: #777;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+    font-weight: 400;
+  }
+  .header-right-links a:hover {
+    color: #000;
+  }
+  .header-right-links i {
+    font-size: 1.1em; /* 图标稍大一点 */
+  }
+
+  /* --- 内容区域通用样式 --- */
+  .info-content {
+    display: none; /* 默认折叠 */
+    padding-bottom: 20px;
+    padding-left: 26px; /* 与标题文字对齐 (Icon宽度+Gap) */
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Lab 内容特定样式 --- */
+  .lab-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #444;
+    max-width: 95%;
+  }
+  .lab-text b {
+    font-weight: 500;
+    color: #000;
+  }
+
+  /* --- News 内容特定样式 --- */
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 400px;
+    overflow-y: auto;
+    /* 隐藏滚动条 */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .news-list::-webkit-scrollbar { display: none; }
+
+  .news-item {
+    display: grid;
+    grid-template-columns: 80px 1fr; /* 日期固定宽度 */
+    gap: 20px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .news-date {
+    font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 12px;
+    color: #999;
+    padding-top: 3px; /* 视觉微调 */
+    text-align: right;
+  }
+
+  .news-body {
+    color: #444;
+  }
+
+  /* News 标题微调：不再是粗黑体，而是深灰+略微加权 */
+  .news-highlight {
+    font-weight: 500; /* 优雅的字重 */
+    color: #2c3e50;
+    margin-right: 4px;
+  }
+
+  /* 链接样式统一 */
+  .unified-infobox a.inline-link {
+    color: #444;
+    text-decoration: none;
+    border-bottom: 1px solid #ddd;
+    transition: all 0.2s;
+  }
+  .unified-infobox a.inline-link:hover {
+    border-bottom-color: #000;
+    color: #000;
+    background: rgba(0,0,0,0.03);
+  }
+
+  /* 分割线 (如果两个都展开时，中间加一条极细线，这里用CSS控制) */
+  .divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 0 0;
+    display: block;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 600px) {
+    .info-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .header-right-links { width: 100%; justify-content: flex-start; flex-wrap: wrap; gap: 12px; margin-left: 24px;}
+    .info-content { padding-left: 0; }
+    .news-item { display: block; margin-bottom: 15px; }
+    .news-date { text-align: left; margin-bottom: 4px; display: inline-block; background: #f5f5f5; padding: 2px 6px; border-radius: 3px;}
+  }
+</style>
+
+<div class="unified-infobox">
+  
+  <!-- SECTION 1: LAB INFORMATION -->
+  <div class="info-section">
+    <div class="info-header" onclick="toggleSection('lab')">
+      <div class="header-left">
+        <i class="fas fa-chevron-right toggle-icon" id="icon-lab"></i>
+        <span class="header-title">Lab Information</span>
+      </div>
+      <div class="header-right-links">
+        <a href="https://c3i.ee.tsinghua.edu.cn/en/" target="_blank">
+          <i class="fas fa-project-diagram"></i> Homepage
+        </a>
+        <a href="https://github.com/PRIME-RL" target="_blank">
+          <i class="fab fa-github"></i> PRIME-RL
+        </a>
+        <a href="https://github.com/TsinghuaC3I" target="_blank">
+          <i class="fab fa-github"></i> THU-C3I
+        </a>
+      </div>
+    </div>
+    
+    <div class="info-content" id="content-lab">
+      <div class="lab-text">
+        <p style="margin-bottom: 8px;">Our group is looking for self-motivated Ph.D. students, Postdocs, and interns. Research topics include theories and scalable methods for large language, reasoning, and embodied models.</p>
+        <p>
+          If you are interested, please drop an email to <b>dingning AT mail.tsinghua.edu.cn</b> with your CV.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <span class="divider"></span>
+
+  <!-- SECTION 2: LATEST NEWS -->
+  <div class="info-section">
+    <div class="info-header" onclick="toggleSection('news')">
+      <div class="header-left">
+        <i class="fas fa-chevron-right toggle-icon" id="icon-news"></i>
+        <span class="header-title">Latest News</span>
+      </div>
+      <!-- News 右侧可以留空，或者放 RSS 图标等，目前留空保持简洁 -->
+      <div class="header-right-links">
+        <!-- Optional: <a href="#"><i class="fas fa-rss"></i> Subscribe</a> -->
+      </div>
+    </div>
+
+    <div class="info-content" id="content-news"> <!-- 默认展开News? 或者都折叠? 这里设为默认展开News方便查看 -->
+      <div class="news-list">
+        
+        <!-- News Item 1 -->
+        <div class="news-item">
+          <div class="news-date">Oct 2025</div>
+          <div class="news-body">
+            <span class="news-highlight">P1 Release.</span>
+            Introducing <a href="https://arxiv.org/abs/2511.13612" class="inline-link">P1</a>, a series of models achieving gold medal-level performance in the Physics Olympiad.
+          </div>
+        </div>
+
+        <!-- News Item 2 -->
+        <div class="news-item">
+          <div class="news-date">May 2025</div>
+          <div class="news-body">
+            <span class="news-highlight">Self-evolving RL.</span>
+            New research on <a href="https://arxiv.org/abs/2504.16084" class="inline-link">Test-Time RL (TTRL)</a> and the <a href="https://arxiv.org/abs/2505.22617" class="inline-link">Entropy Mechanism</a> released.
+          </div>
+        </div>
+
+        <!-- News Item 3 -->
+        <div class="news-item">
+          <div class="news-date">Jan 2025</div>
+          <div class="news-body">
+            <span class="news-highlight">Reasoning.</span>
+            Released <a href="https://arxiv.org/abs/2412.01981" class="inline-link">ImplicitPRM</a> and <a href="https://arxiv.org/abs/2502.01456" class="inline-link">PRIME</a>, scalable solutions for using pure reinforcement learning to advance reasoning capability.
+          </div>
+        </div>
+
+        <!-- News Item 4 -->
+        <div class="news-item">
+          <div class="news-date">Jan 2025</div>
+          <div class="news-body">
+            <span class="news-highlight">Career Update.</span>
+            Starting as an Assistant Professor at the EE department of Tsinghua University.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // 统一的折叠控制函数
+  function toggleSection(id) {
+    const content = document.getElementById('content-' + id);
+    const icon = document.getElementById('icon-' + id);
+    
+    // 检查当前计算后的 display 属性 (为了处理内联样式和CSS类的优先级)
+    const isVisible = content.style.display === 'block' || getComputedStyle(content).display === 'block';
+    
+    if (isVisible) {
+      content.style.display = 'none';
+      icon.classList.remove('open');
+    } else {
+      content.style.display = 'block';
+      icon.classList.add('open');
+    }
+  }
+
+
+</script>
+<!-- Elegant Unified Infobox v3 END -->
+ 
+
+ 
+  <script>
+    function toggleInfobox(button) {
+      const panel = button.closest('.info-panel');
+      const content = panel.querySelector('.infobox-content');
+      const icon = button.querySelector('.toggle-icon');
+      const isCollapsed = panel.classList.toggle('collapsed');
+  
+      if (content) {
+        content.style.display = isCollapsed ? 'none' : 'block';
+      }
+  
+      if (icon) {
+        icon.classList.toggle('fa-minus', !isCollapsed);
+        icon.classList.toggle('fa-plus', isCollapsed);
+      }
+  
+      button.setAttribute('aria-expanded', (!isCollapsed).toString());
+    }
+  </script>
+  
+
+<!-- Add a sidebar with content -->
+
+
+
+
+
+</article>
+    {% if page.selected_papers %}
+      {% include selected_papers.html %}
+    {% endif %}
+    {% if page.news %}
+      {% include news.html %}
+    {% endif %}
+<br>
+
+
+
+
+
+<h4>Awards</h4>
+<ul>
+  <li>Yunfan Award of WAIC, 2024.</li>
+  <li>Young Elite Scientists Sponsorship Program by CAST, 2023.</li>
+  <li>World Artificial Intelligence Conference Youth Outstanding Paper Award, 2023.</li>
+  <li>Shuimu Tsinghua Scholar Program, 2023.</li>
+  <li>Zhang Keqian Scholar Program, 2023.</li>
+  <li>Outstanding Doctoral Dissertation of Tsinghua University, 2023.</li>
+  <li>Outstanding Graduate of DCST, Tsinghua University, 2023.</li>
+  <li><a href="https://www.2022.aclweb.org/best-demo-paper-award">ACL Best System Demonstration Paper Award</a>, 2022.</li>
+  <li><a href="http://scholarship.baidu.com/">Baidu Ph.D Fellowship</a> (10 recipients worldwide), 2021.</li>
+  <li>National Scholarship for Ph.D student, 2021.</li>
+  <li>National Scholarship for Ph.D student, 2020.</li>
+  <li>Tsingfeng Scholarship, Tsinghua University, 2019.</li>
+  <li>CACS Scholarship, 2019.</li>
+  <li>Excellent Graduate, 2018.</li>
+  <li>National Scholarship for undergraduate student, 2018.</li>
+  <li>First-class Academic Scholarship, 2017.</li>
+  <li>First-class Academic Scholarship, 2016.</li>
+</ul>
+
+<h4>Service</h4>
+<ul>
+  <li>Nature Machine Intelligence</li>
+  <li>Neural Networks</li>
+  <li>NeurIPS 2020~2024</li>
+  <li>ICML 2021~2024</li>
+  <li>ACL 2020~2024</li>
+  <li>EMNLP 2020~2024</li>
+  <li>COLING 2020, 2022</li>
+  <li>AAAI 2020~2024</li>
+  <li>IJCAI 2020</li>
+</ul>
+
+
+<!-- Hit Counter -->
+
+
+
+  
+  
+
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+
+<script>
+  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/speed-insights/script.js"></script>
+
+
+<!-- <iframe width="87%" height="200" style="margin-left: 0px;" src="https://api.maptiler.com/maps/openstreetmap/?key=2V215Qvhk6kDer0iYTH7#16.4/40.00006/116.31593"></iframe> -->
+
+
+   
+
+
+<div align="center">
+<a href="https://visitorbadge.io/status?path=https%3A%2F%2Fwww.stingning.cn"><img src="https://api.visitorbadge.io/api/combined?path=https%3A%2F%2Fwww.stingning.cn&label=%20%20&countColor=%23ffffff" /></a>
+</div>

@@ -1,0 +1,26 @@
+- username: PRIME-RL
+  repositories:
+    - SimpleVLA-RL
+    - Entropy-Mechanism-of-RL
+    - TTRL
+    - PRIME
+    - ImplicitPRM
+
+
+- username: thunlp
+  repositories:
+    - UltraChat
+    - OpenPrompt
+    - OpenDelta
+    - Few-NERD
+
+
+- username: openbmb
+  repositories:
+    - UltraFeedback
+    - Eurus
+
+- username: TsinghuaC3I
+  repositories:
+    - UltraMedical
+

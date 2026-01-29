@@ -1,0 +1,59 @@
+<div class="publications">
+  <h4>Selected Papers</h4>
+  <br>
+  {% bibliography -f papers -q @*[selected=true]* %}
+</div>
+
+<script>
+(function () {
+  if (typeof window === 'undefined' || window.__authorListToggleInit) {
+    return;
+  }
+  window.__authorListToggleInit = true;
+
+  function bindAuthorList(list) {
+    if (!list || list.dataset.authorListEnhanced === 'true') {
+      return;
+    }
+    const truncated = list.querySelector('.author-list__text--truncated');
+    const full = list.querySelector('.author-list__text--full');
+    const trigger = list.querySelector('.authors-more-placeholder');
+    if (!truncated || !full || !trigger) {
+      return;
+    }
+
+    const expand = function () {
+      if (list.classList.contains('is-expanded')) {
+        return;
+      }
+      list.classList.add('is-expanded');
+      list.setAttribute('aria-expanded', 'true');
+      truncated.setAttribute('aria-hidden', 'true');
+      full.setAttribute('aria-hidden', 'false');
+      trigger.setAttribute('tabindex', '-1');
+      trigger.setAttribute('aria-hidden', 'true');
+    };
+
+    trigger.addEventListener('click', expand);
+    trigger.addEventListener('keydown', function (event) {
+      const key = event.key || event.code;
+      if (key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 'Space') {
+        event.preventDefault();
+        expand();
+      }
+    });
+
+    list.dataset.authorListEnhanced = 'true';
+  }
+
+  function initAuthorLists() {
+    document.querySelectorAll('[data-author-list]').forEach(bindAuthorList);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAuthorLists, { once: true });
+  } else {
+    initAuthorLists();
+  }
+})();
+</script>
